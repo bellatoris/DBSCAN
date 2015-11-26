@@ -12,14 +12,34 @@
 #include "median_finding.h"
 #include "Coordinate_Set.h"
 
+using namespace std;
+
 class KD_Tree
 {
+// "dataset"is a multi array of the data to be included in the tree.
 public:
-    KD_Tree(float **points, int dimension, int numOfPoints);
-    ~KD_Tree();
-    Coordinate_Set getNeighbors(Coordinate querypoint, float radius);
-    
+    const int dimension;
     Coordinate **dataset;
+    
+    
+public:
+    //constructotr
+    //data , dimension, number of data
+    KD_Tree(float **points, int dimension, int numOfPoints);
+    
+    // destructor
+    ~KD_Tree();
+    
+public:
+    Coordinate_Set getNeighbors(Coordinate querypoint, float radius);
+    // search for all neighbors in ball of size(square Euclidean distance)
+    
+    friend class Coordinate;
+private:
+    Coordinate *root;
+    //build the tree
+    Coordinate *Build_KD_Tree(Coordinate **dataset, int left, int right, int depth, int dimension);
+
 };
 
 

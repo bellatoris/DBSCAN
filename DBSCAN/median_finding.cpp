@@ -12,14 +12,14 @@
 
 using namespace std;
 
-int median_finding(float list[], int left, int right, int n)
+int median_finding(Coordinate **dataset, int ref_axis, int left, int right, int n)
 {
     if(left == right)
         return left;
     while(1)
     {
-        int pivotIndex = pivot(list, left, right);
-        pivotIndex = partition(list, left, right, pivotIndex);
+        int pivotIndex = pivot(dataset, ref_axis, left, right);
+        pivotIndex = partition(dataset, ref_axis, left, right, pivotIndex);
         if (n == pivotIndex)
             return n;
         else if( n < pivotIndex)
@@ -31,57 +31,92 @@ int median_finding(float list[], int left, int right, int n)
 }
 
 //same as quick sort
-int partition(float list[], int left, int right, int pivotIndex)
+int partition(Coordinate **dataset, int ref_axis, int left, int right, int pivotIndex)
 {
-    int pivotValue = list[pivotIndex];
-    swap(list[pivotIndex],list[right]);  // Move pivot to end
-    int storeIndex = left;
-    for(int i = left; i < right; i++)
-        if(list[i] < pivotValue)
-            swap(list[storeIndex++], list[i]);
-    swap(list[right], list[storeIndex]) ; // Move pivot to its final place
-    return storeIndex;
+    if(ref_axis == -1)
+    {
+        float pivotValue = dataset[pivotIndex]->ID;
+        swap(dataset[pivotIndex], dataset[right]);  // Move pivot to end
+        int storeIndex = left;
+        for(int i = left; i < right; i++)
+            if(dataset[i]->ID < pivotValue)
+                swap(dataset[storeIndex++], dataset[i]);
+        swap(dataset[right], dataset[storeIndex]); // Move pivot to its final place
+        return storeIndex;
+    }
+    else
+    {
+        float pivotValue = dataset[pivotIndex]->point[ref_axis];
+        swap(dataset[pivotIndex], dataset[right]);  // Move pivot to end
+        int storeIndex = left;
+        for(int i = left; i < right; i++)
+            // "<=" important!! if you use "<" it may be make error!! cuz i make left node less or same than parent node
+            if(dataset[i]->point[ref_axis] <= pivotValue)
+                swap(dataset[storeIndex++], dataset[i]);
+        swap(dataset[right], dataset[storeIndex]); // Move pivot to its final place
+        return storeIndex;
+    }
 }
 
 
-int pivot(float list[], int left, int right)
+int pivot(Coordinate **dataset, int ref_axis, int left, int right)
 {
     // for 5 or less elements just get median
     if (right - left < 5)
-        return get_median_and_sort(list, left, right);
+        return get_median_and_sort(dataset, ref_axis, left, right);
     //for compute n/5 size
     int size = 0;
     // otherwise move the medians of five-element subgroups to the first n/5 positions
     for(int i = left; i < right; i += 5)
-    {      // get the median of the i'th five-element subgroup
+    {   // get the median of the i'th five-element subgroup
         int subRight = i + 4;
         if (subRight > right)
             subRight = right;
-        int median5 = get_median_and_sort(list, i, subRight);
-        swap(list[median5],list[left + (i - left)/5]);
+        int median5 = get_median_and_sort(dataset, ref_axis, i, subRight);
+        swap(dataset[median5],dataset[left + (i - left)/5]);
         size++;
     }
     // compute the median of the n/5 medians-of-five
-    return median_finding(list, left, left + size - 1, left + (right - left)/10);
+    return median_finding(dataset, ref_axis, left, left + size - 1, left + (right - left)/10);
 }
 
 //insertion sort and get median of array which size is less than 5
-int get_median_and_sort(float list[], int left, int right)
+int get_median_and_sort(Coordinate **dataset, int ref_axis, int left, int right)
 {
-    for (int p = left + 1; p < right + 1; p++)
+    if(ref_axis == -1)
     {
-        int j;
-        float tmp = list[p];
-        // Move right the elements in S that are greater than tmp
-        for(j = p; j > left && list[j - 1] > tmp; j--)
+        for(int p = left + 1; p < right + 1; p++)
         {
-            list[j] = list[j - 1];
+            int j;
+            Coordinate *tmp = dataset[p];
+            // Move right the elements in S that are greater than tmp
+            for(j = p; j > left && dataset[j - 1]->ID > tmp->ID; j--)
+            {
+                dataset[j] = dataset[j - 1];
+            }
+            // “insert” into the right position
+            dataset[j] = tmp;
         }
-        // “insert” into the right position
-        list[j] = tmp;
+        //return median
+        return (right - left)/2 + left;
     }
-    //return median
-    return (right - left)/2 + left;
+    else
+    {
+        for(int p = left + 1; p < right + 1; p++)
+        {
+            int j;
+            Coordinate *tmp = dataset[p];
+            // Move right the elements in S that are greater than tmp
+            for(j = p; j > left && dataset[j - 1]->point[ref_axis] > tmp->point[ref_axis]; j--)
+            {
+                dataset[j] = dataset[j - 1];
+            }
+            // “insert” into the right position
+            dataset[j] = tmp;
+        }
+        //return median
+        return (right - left)/2 + left;
+    }
 }
 
 

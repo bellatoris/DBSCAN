@@ -67,10 +67,10 @@
 			isa = PBXGroup;
 			children = (
 				4FA3DD881C04B5CB00C62A04 /* main.cpp */,
-				4FA3DD9E1C04EF7800C62A04 /* Coordinate_Set.h */,
-				4FA3DD9C1C04EF6200C62A04 /* Coordinate_Set.cpp */,
 				4FA3DD911C04C78300C62A04 /* median_finding.h */,
 				4FA3DD8F1C04B5EC00C62A04 /* median_finding.cpp */,
+				4FA3DD9E1C04EF7800C62A04 /* Coordinate_Set.h */,
+				4FA3DD9C1C04EF6200C62A04 /* Coordinate_Set.cpp */,
 				4FA3DD971C04E9E500C62A04 /* KD_Tree.h */,
 				4FA3DD951C04E9D800C62A04 /* KD_Tree.cpp */,
 			);
@@ -255,6 +255,7 @@
 				4FA3DD8E1C04B5CB00C62A04 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
