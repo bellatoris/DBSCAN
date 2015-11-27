@@ -19,6 +19,7 @@ class KD_Tree
 // "dataset"is a multi array of the data to be included in the tree.
 public:
     const int dimension;
+    const int num_of_ponint;
     Coordinate **dataset;
     
     
@@ -31,7 +32,7 @@ public:
     ~KD_Tree();
     
 public:
-    Coordinate_Set getNeighbors(Coordinate querypoint, float radius);
+    Coordinate_Set getNeighbors(Coordinate &querypoint, float epslion);
     // search for all neighbors in ball of size(square Euclidean distance)
     
     friend class Coordinate;

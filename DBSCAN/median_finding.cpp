@@ -12,6 +12,23 @@
 
 using namespace std;
 
+
+void quick_sort(Coordinate **dataset, int num_of_element)
+{
+    qsort_recur(dataset, 0, num_of_element - 1);
+}
+
+void qsort_recur(Coordinate **dataset, int start, int end)
+{
+    if(start < end)
+    {
+        int median = median_finding(dataset, -1, start, end, (end - start)/2 + start);
+        qsort_recur(dataset, start, median);
+        qsort_recur(dataset, median + 1, end);
+    }
+}
+
+
 int median_finding(Coordinate **dataset, int ref_axis, int left, int right, int n)
 {
     if(left == right)

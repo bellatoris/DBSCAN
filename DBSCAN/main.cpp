@@ -8,7 +8,8 @@
 
 #include <iostream>
 #include <random>
-#include "KD_Tree.h"
+#include "DBSCAN.h"
+
 
 using namespace std;
 
@@ -23,60 +24,66 @@ int main(int argc, const char * argv[]) {
         cout << "ID:";
         if(i < 10)
             cout <<"0";
-         cout << i << "\t\t(";
-        a[i] = new float[4];
+         cout << i << "\t\t";
+        a[i] = new float[2];
         float k = rng()%100;
         float y = k/100;
-        for(int j = 0; j < 3; j++)
+        for(int j = 0; j < 1; j++)
         {
-            a[i][j] = 50 + y + rng()%10;
+            a[i][j] = 50 + y + rng()%50;
             cout << a[i][j] << ", ";
         }
-        a[i][3] = 50 + y + rng()%10;
-        cout << a[i][3] << ")\n";
+        a[i][1] = 50 + y + rng()%10;
+        cout << a[i][1] << "\n";
     }
     cout << endl;
     
-//    for(int i = 0; i < 10; i++)
+//    for(int i = 0; i < 11; i++)
 //    {
 //        a[i] = new float[2];
 //    }
-//    a[0][0] = 3;
-//    a[0][1] = 2;
+//    a[0][0] = 0;
+//    a[0][1] = 5;
 //    a[1][0] = 1;
-//    a[1][1] = 0;
-//    a[2][0] = 1;
-//    a[2][1] = 1;
-//    a[3][0] = 3;
-//    a[3][1] = 2;
-//    a[4][0] = 1;
+//    a[1][1] = 6;
+//    a[2][0] = 2;
+//    a[2][1] = 7;
+//    a[3][0] = 2;
+//    a[3][1] = 4;
+//    a[4][0] = 2;
 //    a[4][1] = 2;
-//    a[5][0] = 0;
+//    a[5][0] = 3;
 //    a[5][1] = 2;
-//    a[6][0] = 1;
-//    a[6][1] = 1;
-//    a[7][0] = 3;
-//    a[7][1] = 0;
-//    a[8][0] = 0;
-//    a[8][1] = 1;
-//    a[9][0] = 3;
-//    a[9][1] = 3;
+//    a[6][0] = 4;
+//    a[6][1] = 9;
+//    a[7][0] = 4;
+//    a[7][1] = 1;
+//    a[8][0] = 5;
+//    a[8][1] = 3;
+//    a[9][0] = 6;
+//    a[9][1] = 4;
+//    a[10][0] = 7;
+//    a[10][1] = 1;
+
     
-    KD_Tree x = KD_Tree(a, 4, 100);
+    KD_Tree x = KD_Tree(a, 2, 100);
+    DBSCAN myDBSCAN(x, 3, 2);
+    myDBSCAN.run();
     
-    for(int i = 0; i < 100; i++)
-    {
-        cout << x.dataset[i]->ID << "\t(";
-        for(int j = 0; j < 3; j++)
-        {
-            cout << x.dataset[i]->point[j] << ", ";
-        }
-        cout << x.dataset[i]->point[3] << ")\n";
-    }
-    cout << endl << endl;
-    Coordinate_Set k = x.getNeighbors(*x.dataset[0], 5);
-    k.print();
-    
+//    for(int i = 0; i < 100; i++)
+//    {
+//        cout << x.dataset[i]->ID << "\t(";
+//        for(int j = 0; j < 3; j++)
+//        {
+//            cout << x.dataset[i]->point[j] << ", ";
+//        }
+//        cout << x.dataset[i]->point[3] << ")\n";
+//    }
+//    cout << endl << endl;
+//    cout << x.dataset[0]->ID << endl;
+//    Coordinate_Set k = x.getNeighbors(*x.dataset[0], 100);
+//    k.print();
+//    
 
 //    KD_Tree x = KD_Tree(a, 5, 100);
 //    

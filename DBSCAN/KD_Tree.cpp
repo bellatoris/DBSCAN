@@ -19,7 +19,7 @@ inline bool same_array(float *array1, float* array2, int dimension)
 }
 
 
-KD_Tree::KD_Tree(float **points, int dimension, int numOfPoints): dimension(dimension)
+KD_Tree::KD_Tree(float **points, int dimension, int numOfPoints): dimension(dimension), num_of_ponint(numOfPoints)
 {
     int depth = 0;
     dataset = new Coordinate*[numOfPoints];
@@ -92,11 +92,11 @@ Coordinate* KD_Tree::Build_KD_Tree(Coordinate **dataset, int left, int right, in
 }
 
 
-Coordinate_Set KD_Tree::getNeighbors(Coordinate querypoint, float radius)
+Coordinate_Set KD_Tree::getNeighbors(Coordinate &querypoint, float epslion)
 {
     Coordinate_Set *container = new Coordinate_Set(dimension);
 
-    root->search(container, &querypoint, radius);
+    root->search(container, &querypoint, epslion);
     
     return *container;
 }

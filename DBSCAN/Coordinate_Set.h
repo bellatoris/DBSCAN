@@ -39,6 +39,11 @@ public:
     int ref_axis;
     float axis_data;
     float *point = NULL;
+    
+    //for disjoint set
+    bool core;
+    int rank;
+    
 
 public:
     
@@ -49,16 +54,20 @@ public:
     //left, right for child //parent for Disjoint set //next for Coordinate set
     Coordinate *left = NULL, *right = NULL, *parent = NULL, *next = NULL;
     
+    Coordinate *prev = NULL;
+    
+    
+    
     
     void set_lower_and_upper_bound();
     //set lower and upper bound of sub tree
     
-    void search(Coordinate_Set *container, Coordinate *query, float radius);
+    void search(Coordinate_Set *container, Coordinate *query, float epslion);
     // recursive innert ost cor routine for searching..
     
-    void process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate *query, float radius);
+    void process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate *query, float epslion);
     
-    bool box_in_search_range(Coordinate *query, float radius);
+    bool box_in_search_range(Coordinate *query, float epslion);
     // return true if the bounding vox for this node is within the
     // search range giveb by the searchvector and maximum ballsize in 'sr'.
     
@@ -74,15 +83,17 @@ public:
     // add one new element to the list of results
     void push_element(Coordinate *data);
     
-    void quick_sort(int num_of_element);
-    
-    void qsort_recur(int start, int end);
-    
     //print all element in Coordinate_Set in ID order.
     void print();
     
+    void UNION(Coordinate *core, Coordinate *point);
+    
+    Coordinate *Find_Set(Coordinate* point);
+
+    
     //
     Coordinate *head;
+    Coordinate *tail;
 
     
     //quicksort

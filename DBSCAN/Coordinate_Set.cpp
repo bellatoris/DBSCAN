@@ -1,3 +1,5 @@
+
+
 //
 //  Coordinate_Set.cpp
 //  DBSCAN
@@ -15,12 +17,7 @@ inline float squared(const float x)
 }
 
 
-
-
-
-
-
-
+//class Coordinate
 Coordinate::Coordinate()
 {
     
@@ -69,13 +66,14 @@ void Coordinate::set_lower_and_upper_bound()
         for(int i = 0; i < dimension; i++)
         {
             upper[i] = std::max(left->upper[i], right->upper[i]);
-            lower[i] = std::min(left->lower[i], left->lower[i]);
+            lower[i] = std::min(left->lower[i], right->lower[i]);
         }
     }
+    return;
 }
 
 
-void Coordinate::search(Coordinate_Set *container, Coordinate *query, float radius)
+void Coordinate::search(Coordinate_Set *container, Coordinate *query, float epslion)
 // the core search routine.
 // This uses true distance to bounding box as the
 // criterion to search the secondary node.
@@ -89,7 +87,7 @@ void Coordinate::search(Coordinate_Set *container, Coordinate *query, float radi
     if(!left && !right)
         //we are on a leaf node
     {
-        process_leaf_node_fixed_sphere(container, query, radius);
+        process_leaf_node_fixed_sphere(container, query, epslion);
     }
     else
     {
@@ -102,16 +100,16 @@ void Coordinate::search(Coordinate_Set *container, Coordinate *query, float radi
         //        left_extra = qval - cut_val_left;
         //        right_extra = cut_val_right - qval;
         //
-        //        if(left && squared(left_extra) < squared(radius))
+        //        if(left && squared(left_extra) < squared(epslion))
         //        {
-        //            if(left->box_in_search_range(query, radius))
-        //                left->search(container, query, radius);
+        //            if(left->box_in_search_range(query, epslion))
+        //                left->search(container, query, epslion);
         //        }
         //
-        //        if(right && squared(right_extra) < squared(radius))
+        //        if(right && squared(right_extra) < squared(epslion))
         //        {
-        //            if(right->box_in_search_range(query, radius))
-        //                right->search(container, query, radius);
+        //            if(right->box_in_search_range(query, epslion))
+        //                right->search(container, query, epslion);
         //        }
         
         if (qval <= axis_data)
@@ -128,26 +126,26 @@ void Coordinate::search(Coordinate_Set *container, Coordinate *query, float radi
         }
         
         if (ncloser != NULL)
-            ncloser->search(container, query, radius);
+            ncloser->search(container, query, epslion);
         
-        if ((nfarther != NULL) && (squared(extra) < radius))
+        if ((nfarther != NULL) && (squared(extra) <= squared(epslion)))
         {
             // first cut
-            if (nfarther->box_in_search_range(query, radius))
+            if (nfarther->box_in_search_range(query, epslion))
             {
-                nfarther->search(container, query, radius);
+                nfarther->search(container, query, epslion);
             }
         }
     }
 }
 
-void Coordinate::process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate *query, float radius)
+void Coordinate::process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate *query, float epslion)
 {
     float sum = 0;
     for(int i = 0; i < dimension; i++)
     {
         sum += squared(point[i] - query->point[i]);
-        if(sum > squared(radius))
+        if(sum > squared(epslion))
             return;
     }
     if(sum)
@@ -168,18 +166,17 @@ inline float dis_from_bnd(float x, float amin, float amax)
         return 0;
 }
 
-inline bool Coordinate::box_in_search_range(Coordinate *query, float radius)
+inline bool Coordinate::box_in_search_range(Coordinate *query, float epslion)
 {
     float dis2 = 0;
     for(int i = 0; i < dimension; i++)
     {
         dis2 += squared(dis_from_bnd(query->point[i], lower[i], upper[i]));
-        if(dis2 > squared(radius))
+        if(dis2 > squared(epslion))
             return false;
     }
     return true;
 }
-
 
 
 
@@ -205,20 +202,6 @@ void Coordinate_Set::push_element(Coordinate *data)
     num_of_element++;
 }
 
-void Coordinate_Set::quick_sort(int num_of_element)
-{
-    qsort_recur(0, num_of_element - 1);
-}
-
-void Coordinate_Set::qsort_recur(int start, int end)
-{
-    if(start < end)
-    {
-        int median = median_finding(quick_container, -1, start, end, (end - start)/2 + start);
-        qsort_recur(start, median);
-        qsort_recur(median + 1, end);
-    }
-}
 
 
 void Coordinate_Set::print()
@@ -232,7 +215,7 @@ void Coordinate_Set::print()
             quick_container[i] = temp;
             temp = temp->next;
         }
-        quick_sort(num_of_element);
+        quick_sort(quick_container, num_of_element);
         for(int i = 0; i < num_of_element; i++)
         {
             std::cout << quick_container[i]->ID <<"\t(";
@@ -244,6 +227,53 @@ void Coordinate_Set::print()
         }
     }
 }
+
+void Coordinate_Set::UNION(Coordinate *core, Coordinate *point)
+{
+    Coordinate *u = Find_Set(core);
+    Coordinate *v = Find_Set(point);
+    
+    if(u->rank == v->rank)
+    {
+        u->rank++;
+        v->parent = u;
+    }
+    else if(u->rank > v->rank)
+    {
+        v->parent = u;
+    }
+    else
+    {
+        u->parent = v;
+    }
+}
+
+
+Coordinate* Coordinate_Set::Find_Set(Coordinate* point)
+{
+    int num = 0;
+    tail = new Coordinate();
+    Coordinate *u = point;
+    while(u->parent != u)
+    {
+        u->prev = tail->prev;
+        tail->prev = u;
+        num++;
+        u = u->parent;
+    }
+    Coordinate *temp = tail->prev;
+    if(temp)
+    {
+        for(int i = 0; i < num; i++)
+        {
+            temp->parent = u;
+            temp = temp->prev;
+        }
+    }
+    return u;
+}
+
+
 
 
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F6AC71C1C07AC2800333236 /* DBSCAN.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F6AC71B1C07AC2800333236 /* DBSCAN.cpp */; };
 		4FA3DD891C04B5CB00C62A04 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3DD881C04B5CB00C62A04 /* main.cpp */; };
 		4FA3DD901C04B5EC00C62A04 /* median_finding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3DD8F1C04B5EC00C62A04 /* median_finding.cpp */; };
 		4FA3DD961C04E9D800C62A04 /* KD_Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3DD951C04E9D800C62A04 /* KD_Tree.cpp */; };
@@ -26,6 +27,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F6AC71B1C07AC2800333236 /* DBSCAN.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DBSCAN.cpp; sourceTree = "<group>"; };
+		4F6AC71D1C07AC3200333236 /* DBSCAN.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBSCAN.h; sourceTree = "<group>"; };
 		4FA3DD851C04B5CB00C62A04 /* DBSCAN */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DBSCAN; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA3DD881C04B5CB00C62A04 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4FA3DD8F1C04B5EC00C62A04 /* median_finding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = median_finding.cpp; sourceTree = "<group>"; };
@@ -73,6 +76,8 @@
 				4FA3DD9C1C04EF6200C62A04 /* Coordinate_Set.cpp */,
 				4FA3DD971C04E9E500C62A04 /* KD_Tree.h */,
 				4FA3DD951C04E9D800C62A04 /* KD_Tree.cpp */,
+				4F6AC71D1C07AC3200333236 /* DBSCAN.h */,
+				4F6AC71B1C07AC2800333236 /* DBSCAN.cpp */,
 			);
 			path = DBSCAN;
 			sourceTree = "<group>";
@@ -134,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA3DD961C04E9D800C62A04 /* KD_Tree.cpp in Sources */,
+				4F6AC71C1C07AC2800333236 /* DBSCAN.cpp in Sources */,
 				4FA3DD891C04B5CB00C62A04 /* main.cpp in Sources */,
 				4FA3DD9D1C04EF6200C62A04 /* Coordinate_Set.cpp in Sources */,
 				4FA3DD901C04B5EC00C62A04 /* median_finding.cpp in Sources */,

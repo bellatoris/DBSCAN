@@ -11,6 +11,10 @@
 
 #include "Coordinate_Set.h"
 
+void quick_sort(Coordinate **dataset, int num_of_element);
+
+void qsort_recur(Coordinate **dataset, int start, int end);
+
 int median_finding(Coordinate **dataset, int axis, int left, int right, int n);
 
 int partition(Coordinate **dataset, int axis, int left, int right, int pivotIndex);
