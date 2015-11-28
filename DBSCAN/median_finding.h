@@ -11,6 +11,7 @@
 
 #include "Coordinate_Set.h"
 
+//quick_sort
 void quick_sort(Coordinate **dataset, int num_of_element);
 
 void qsort_recur(Coordinate **dataset, int start, int end);

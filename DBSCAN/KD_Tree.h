@@ -32,7 +32,7 @@ public:
     ~KD_Tree();
     
 public:
-    Coordinate_Set getNeighbors(Coordinate &querypoint, float epslion);
+    Coordinate_Set *getNeighbors(Coordinate &querypoint, float epslion);
     // search for all neighbors in ball of size(square Euclidean distance)
     
     friend class Coordinate;

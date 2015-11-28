@@ -20,7 +20,6 @@ inline float squared(const float x)
 //class Coordinate
 Coordinate::Coordinate()
 {
-    
 }
 
 Coordinate::Coordinate(int dimension):dimension(dimension)
@@ -31,7 +30,20 @@ Coordinate::Coordinate(int dimension):dimension(dimension)
 
 Coordinate::~Coordinate()
 {
-    
+    if(left)
+        delete left;
+    if(right)
+        delete right;
+    if(lower)
+    {
+        delete []lower;
+        lower = NULL;
+    }
+    if(upper)
+    {
+        delete []upper;
+        upper = NULL;
+    }
 }
 
 void Coordinate::set_lower_and_upper_bound()
@@ -73,7 +85,7 @@ void Coordinate::set_lower_and_upper_bound()
 }
 
 
-void Coordinate::search(Coordinate_Set *container, Coordinate *query, float epslion)
+void Coordinate::search(Coordinate_Set *container, Coordinate &query, float epslion)
 // the core search routine.
 // This uses true distance to bounding box as the
 // criterion to search the secondary node.
@@ -94,7 +106,7 @@ void Coordinate::search(Coordinate_Set *container, Coordinate *query, float epsl
         Coordinate *ncloser, *nfarther;
         
         float extra;
-        float qval = query->point[ref_axis];
+        float qval = query.point[ref_axis];
         // value of the wall boundary on the cut dimension.
         //        float left_extra, right_extra;
         //        left_extra = qval - cut_val_left;
@@ -139,12 +151,12 @@ void Coordinate::search(Coordinate_Set *container, Coordinate *query, float epsl
     }
 }
 
-void Coordinate::process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate *query, float epslion)
+void Coordinate::process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate &query, float epslion)
 {
     float sum = 0;
     for(int i = 0; i < dimension; i++)
     {
-        sum += squared(point[i] - query->point[i]);
+        sum += squared(point[i] - query.point[i]);
         if(sum > squared(epslion))
             return;
     }
@@ -166,12 +178,12 @@ inline float dis_from_bnd(float x, float amin, float amax)
         return 0;
 }
 
-inline bool Coordinate::box_in_search_range(Coordinate *query, float epslion)
+inline bool Coordinate::box_in_search_range(Coordinate &query, float epslion)
 {
     float dis2 = 0;
     for(int i = 0; i < dimension; i++)
     {
-        dis2 += squared(dis_from_bnd(query->point[i], lower[i], upper[i]));
+        dis2 += squared(dis_from_bnd(query.point[i], lower[i], upper[i]));
         if(dis2 > squared(epslion))
             return false;
     }
@@ -184,14 +196,21 @@ inline bool Coordinate::box_in_search_range(Coordinate *query, float epslion)
 
 
 
-Coordinate_Set::Coordinate_Set(int dimension): dimension(dimension), num_of_element(0)
+Coordinate_Set::Coordinate_Set():num_of_neighbor(0)
 {
     head = new Coordinate();
 }
 
 Coordinate_Set::~Coordinate_Set()
 {
-    
+    if(head)
+    {
+        if(head->next)
+            head->next = NULL;
+        delete head;
+    }
+    if(quick_container)
+        delete []quick_container;
 }
 
 
@@ -199,7 +218,7 @@ void Coordinate_Set::push_element(Coordinate *data)
 {
     data->next = head->next;
     head->next = data;
-    num_of_element++;
+    num_of_neighbor++;
 }
 
 
@@ -207,16 +226,17 @@ void Coordinate_Set::push_element(Coordinate *data)
 void Coordinate_Set::print()
 {
     Coordinate *temp = head->next;
-    quick_container = new Coordinate*[num_of_element];
+    quick_container = new Coordinate*[num_of_neighbor];
     if(temp)
     {
-        for(int i = 0; i < num_of_element; i++)
+        int dimension = temp->dimension;
+        for(int i = 0; i < num_of_neighbor; i++)
         {
             quick_container[i] = temp;
             temp = temp->next;
         }
-        quick_sort(quick_container, num_of_element);
-        for(int i = 0; i < num_of_element; i++)
+        quick_sort(quick_container, num_of_neighbor);
+        for(int i = 0; i < num_of_neighbor; i++)
         {
             std::cout << quick_container[i]->ID <<"\t(";
             for(int j = 0; j < dimension - 1; j++)
@@ -226,51 +246,7 @@ void Coordinate_Set::print()
             std::cout << quick_container[i]->point[dimension - 1] << ")\n";
         }
     }
-}
-
-void Coordinate_Set::UNION(Coordinate *core, Coordinate *point)
-{
-    Coordinate *u = Find_Set(core);
-    Coordinate *v = Find_Set(point);
-    
-    if(u->rank == v->rank)
-    {
-        u->rank++;
-        v->parent = u;
-    }
-    else if(u->rank > v->rank)
-    {
-        v->parent = u;
-    }
-    else
-    {
-        u->parent = v;
-    }
-}
-
-
-Coordinate* Coordinate_Set::Find_Set(Coordinate* point)
-{
-    int num = 0;
-    tail = new Coordinate();
-    Coordinate *u = point;
-    while(u->parent != u)
-    {
-        u->prev = tail->prev;
-        tail->prev = u;
-        num++;
-        u = u->parent;
-    }
-    Coordinate *temp = tail->prev;
-    if(temp)
-    {
-        for(int i = 0; i < num; i++)
-        {
-            temp->parent = u;
-            temp = temp->prev;
-        }
-    }
-    return u;
+    delete [] quick_container;
 }
 
 

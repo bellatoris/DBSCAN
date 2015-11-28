@@ -40,8 +40,8 @@ public:
     float axis_data;
     float *point = NULL;
     
-    //for disjoint set
-    bool core;
+    //for disjoint set // if thie point is core then core_or_member = 1, else if this point is cluster member then core_or_member = 0
+    int core_or_member;
     int rank;
     
 
@@ -53,23 +53,21 @@ public:
     
     //left, right for child //parent for Disjoint set //next for Coordinate set
     Coordinate *left = NULL, *right = NULL, *parent = NULL, *next = NULL;
-    
-    Coordinate *prev = NULL;
-    
+        
     
     
     
     void set_lower_and_upper_bound();
     //set lower and upper bound of sub tree
     
-    void search(Coordinate_Set *container, Coordinate *query, float epslion);
+    void search(Coordinate_Set *container, Coordinate &query, float epslion);
     // recursive innert ost cor routine for searching..
     
-    void process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate *query, float epslion);
+    void process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate &query, float epslion);
     
-    bool box_in_search_range(Coordinate *query, float epslion);
-    // return true if the bounding vox for this node is within the
-    // search range giveb by the searchvector and maximum ballsize in 'sr'.
+    bool box_in_search_range(Coordinate &query, float epslion);
+    // return true if the bounding box for this node is within the
+    // search range giveb by the searchvector and maximum radius in 'epsilon'.
     
 };
 
@@ -77,7 +75,7 @@ public:
 class Coordinate_Set
 {
 public:
-    Coordinate_Set(int dimension);
+    Coordinate_Set();
     ~Coordinate_Set();
     
     // add one new element to the list of results
@@ -86,22 +84,14 @@ public:
     //print all element in Coordinate_Set in ID order.
     void print();
     
-    void UNION(Coordinate *core, Coordinate *point);
-    
-    Coordinate *Find_Set(Coordinate* point);
-
-    
     //
     Coordinate *head;
-    Coordinate *tail;
-
     
     //quicksort
     Coordinate **quick_container;
     
-    
-    int dimension;
-    int num_of_element;
+    //number of neighbor
+    int num_of_neighbor;
 };
 
 #endif /* Coordinate_Set_h */

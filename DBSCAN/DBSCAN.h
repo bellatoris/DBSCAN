@@ -19,8 +19,16 @@ public:
     
     void run();
     
-    Coordinate_Set cSet;
+    
+    void UNION(Coordinate *core, Coordinate *point);
+    Coordinate* Find_Set(Coordinate* point);
+
+
+    
+    //for run
     KD_Tree *kdt;
+    Coordinate *dummy;
+    Coordinate_Set *cSet;
 };
 
 
