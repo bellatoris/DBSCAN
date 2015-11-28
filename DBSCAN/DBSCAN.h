@@ -26,9 +26,9 @@ public:
 
     
     //for run
-    KD_Tree *kdt;
-    Coordinate *dummy;
-    Coordinate_Set *cSet;
+    KD_Tree *kdt = NULL;
+    Coordinate *dummy = NULL;
+    Coordinate_Set *cSet = NULL;
 };
 
 

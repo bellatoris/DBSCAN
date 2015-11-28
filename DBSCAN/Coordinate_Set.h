@@ -38,7 +38,7 @@ public:
     
     int ref_axis;
     float axis_data;
-    float *point = NULL;
+    float *point;
     
     //for disjoint set // if thie point is core then core_or_member = 1, else if this point is cluster member then core_or_member = 0
     int core_or_member;
@@ -49,13 +49,11 @@ public:
     
     float cut_val_left, cut_val_right; //cut value
     
-    float *lower, *upper;//[min, max] of the box enclosing all points
+    float *lower = NULL, *upper = NULL;//[min, max] of the box enclosing all points
     
     //left, right for child //parent for Disjoint set //next for Coordinate set
-    Coordinate *left = NULL, *right = NULL, *parent = NULL, *next = NULL;
+    Coordinate *left = NULL, *right = NULL, *parent = NULL, *next;
         
-    
-    
     
     void set_lower_and_upper_bound();
     //set lower and upper bound of sub tree
@@ -84,11 +82,8 @@ public:
     //print all element in Coordinate_Set in ID order.
     void print();
     
-    //
-    Coordinate *head;
-    
-    //quicksort
-    Coordinate **quick_container;
+    //for neighbor collecting
+    Coordinate *head = NULL;
     
     //number of neighbor
     int num_of_neighbor;

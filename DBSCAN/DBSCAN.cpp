@@ -117,7 +117,7 @@ void DBSCAN::UNION(Coordinate *core, Coordinate *point)
     }
 }
 
-
+//use left because leaf node does not use left
 Coordinate* DBSCAN::Find_Set(Coordinate* point)
 {
     int num = 0;

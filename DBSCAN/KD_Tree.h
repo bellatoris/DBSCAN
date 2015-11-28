@@ -20,7 +20,7 @@ class KD_Tree
 public:
     const int dimension;
     const int num_of_ponint;
-    Coordinate **dataset;
+    Coordinate **dataset = NULL;
     
     
 public:
@@ -37,7 +37,7 @@ public:
     
     friend class Coordinate;
 private:
-    Coordinate *root;
+    Coordinate *root = NULL;
     //build the tree
     Coordinate *Build_KD_Tree(Coordinate **dataset, int left, int right, int depth, int dimension);
 

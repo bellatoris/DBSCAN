@@ -31,18 +31,20 @@ Coordinate::Coordinate(int dimension):dimension(dimension)
 Coordinate::~Coordinate()
 {
     if(left)
+    {
         delete left;
+    }
     if(right)
+    {
         delete right;
+    }
     if(lower)
     {
         delete []lower;
-        lower = NULL;
     }
     if(upper)
     {
         delete []upper;
-        upper = NULL;
     }
 }
 
@@ -209,8 +211,6 @@ Coordinate_Set::~Coordinate_Set()
             head->next = NULL;
         delete head;
     }
-    if(quick_container)
-        delete []quick_container;
 }
 
 
@@ -226,7 +226,8 @@ void Coordinate_Set::push_element(Coordinate *data)
 void Coordinate_Set::print()
 {
     Coordinate *temp = head->next;
-    quick_container = new Coordinate*[num_of_neighbor];
+    //for negihbor sort by ID
+    Coordinate **quick_container = new Coordinate*[num_of_neighbor];
     if(temp)
     {
         int dimension = temp->dimension;
