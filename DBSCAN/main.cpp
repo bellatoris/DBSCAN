@@ -34,12 +34,12 @@ int main(int argc, const char * argv[]) {
         float y = k/100;
         for(int j = 0; j < 1; j++)
         {
-            a[i][j] = 50 + y + rng()%30;
-//            a[i][j] = 50;
+//            a[i][j] = 50 + y + rng()%30;
+            a[i][j] = rng()%30;
             cout << a[i][j] << ", ";
         }
-        a[i][1] = 50 + y + rng()%30;
-//        a[i][1] = 60;
+//        a[i][1] = 50 + y + rng()%30;
+        a[i][1] = rng()%30;
         cout << a[i][1] << "\n";
     }
     
@@ -86,7 +86,7 @@ int main(int argc, const char * argv[]) {
 //    a[10][1] = 1;
 
     
-    KD_Tree x = KD_Tree(a, 2, 100);
+    KD_Tree x = KD_Tree(a, 3, 100);
     DBSCAN myDBSCAN = DBSCAN(x, 2, 2);
     myDBSCAN.run();
     

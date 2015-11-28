@@ -31,7 +31,7 @@ DBSCAN::DBSCAN(KD_Tree &kd_tree, float epsilon, int minPoints)
     {
         if(kd_tree.dataset[i])
         {
-            cSet = kd_tree.getNeighbors(*kd_tree.dataset[i], epsilon);
+            Coordinate_Set *cSet = kd_tree.getNeighbors(*kd_tree.dataset[i], epsilon);
             if(cSet->num_of_neighbor >= minPoints)
             {
                 //dataset[i] is core

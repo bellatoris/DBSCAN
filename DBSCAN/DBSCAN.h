@@ -28,7 +28,6 @@ public:
     //for run
     KD_Tree *kdt = NULL;
     Coordinate *dummy = NULL;
-    Coordinate_Set *cSet = NULL;
 };
 
 
