@@ -63,7 +63,7 @@ Coordinate* KD_Tree::Build_KD_Tree(Coordinate **dataset, int left, int right, in
         temp->ref_axis = depth%dimension;
         temp->depth = depth;
 
-//        //for that median data is duplicate data
+        //for that median data is duplicate data
         int i = 1;
         //find real split point that has median data
         while(left + (right - left)/2 + i <= right)

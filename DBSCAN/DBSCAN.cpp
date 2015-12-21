@@ -87,9 +87,11 @@ void DBSCAN::run()
         else
         {
             temp = temp_array[i];
-            while(temp->parent != temp)
-                temp = temp->parent;
-            cout << temp->ID << endl;
+//            while(temp->parent != temp)
+//                temp = temp->parent;
+//            cout << temp->ID << endl;
+//            temp = NULL;
+            cout << Find_Set(temp)->ID << endl;
             temp = NULL;
         }
     }
