@@ -1,4 +1,4 @@
-//
+﻿//
 //  DBSCAN.cpp
 //  DBSCAN
 //
@@ -68,7 +68,7 @@ DBSCAN::~DBSCAN()
 void DBSCAN::run()
 {
     Coordinate *temp;
-    Coordinate *temp_array[kdt->num_of_ponint];
+	Coordinate **temp_array = new Coordinate*[kdt->num_of_ponint];
     int n = 0;
     for(int i = 0; i < kdt->num_of_ponint; i++)
     {
@@ -87,11 +87,9 @@ void DBSCAN::run()
         else
         {
             temp = temp_array[i];
-//            while(temp->parent != temp)
-//                temp = temp->parent;
-//            cout << temp->ID << endl;
-//            temp = NULL;
-            cout << Find_Set(temp)->ID << endl;
+            while(temp->parent != temp)
+                temp = temp->parent;
+            cout << temp->ID << endl;
             temp = NULL;
         }
     }

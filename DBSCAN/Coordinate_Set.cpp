@@ -9,6 +9,7 @@
 //
 
 #include "median_finding.h"
+#include <algorithm>
 
 //utility
 inline float squared(const float x)

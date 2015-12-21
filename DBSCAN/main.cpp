@@ -42,7 +42,7 @@ int main(int argc, const char * argv[]) {
         a[i][1] = rng()%30;
         cout << a[i][1] << "\n";
     }
-//
+    
 //    for(int i = 0; i < 4; i++)
 //    {
 //        a[i] = new float[2];
@@ -86,7 +86,7 @@ int main(int argc, const char * argv[]) {
 //    a[10][1] = 1;
 
     
-    KD_Tree x = KD_Tree(a, 2, 100);
+    KD_Tree x = KD_Tree(a, 3, 100);
     DBSCAN myDBSCAN = DBSCAN(x, 2, 2);
     myDBSCAN.run();
     

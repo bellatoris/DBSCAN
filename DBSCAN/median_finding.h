@@ -1,4 +1,4 @@
-//
+﻿//
 //  median_finding.h
 //  DBSCAN
 //

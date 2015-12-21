@@ -1,4 +1,4 @@
-//
+﻿//
 //  Coordinate_Set.h
 //  DBSCAN
 //
