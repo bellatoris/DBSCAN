@@ -30,6 +30,7 @@ KD_Tree::KD_Tree(float **points, int dimension, int numOfPoints): dimension(dime
         dataset[i]->point = points[i];
         for(int j = 0; j < dimension; j++)
         {
+            //update upper and lower for faster range search
             dataset[i]->upper[j] = dataset[i]->point[j];
             dataset[i]->lower[j] = dataset[i]->point[j];
         }
@@ -54,7 +55,6 @@ Coordinate* KD_Tree::Build_KD_Tree(Coordinate **dataset, int left, int right, in
     {
         return dataset[left];
     }
-   //code optimization and same value problem remain
     else
     {
         Coordinate *temp = new Coordinate(dimension);
@@ -63,7 +63,7 @@ Coordinate* KD_Tree::Build_KD_Tree(Coordinate **dataset, int left, int right, in
         temp->ref_axis = depth%dimension;
         temp->depth = depth;
 
-//        //for that median data is duplicate data
+        //for that median data is duplicate data
         int i = 1;
         //find real split point that has median data
         while(left + (right - left)/2 + i <= right)
@@ -84,7 +84,9 @@ Coordinate* KD_Tree::Build_KD_Tree(Coordinate **dataset, int left, int right, in
                 {
                     if(same_array(dataset[j]->point, dataset[left + (right -left)/2 + (i - 1)]->point, dimension))
                     {
+                        //partition
                         swap(dataset[storeIndex++], dataset[j]);
+                        //delete duplicate node and make it NULL
                         delete dataset[storeIndex - 1];
                         dataset[storeIndex - 1] = NULL;
                     }
@@ -93,11 +95,6 @@ Coordinate* KD_Tree::Build_KD_Tree(Coordinate **dataset, int left, int right, in
             }
             if(storeIndex == right)
                 temp->left = dataset[right];
-//            else if(storeIndex + 1 == right)
-//            {
-//                temp->left = dataset[storeIndex];
-//                temp->right = dataset[right];
-//            }
             else
             {
                 temp->left = Build_KD_Tree(dataset, storeIndex, storeIndex + (right - storeIndex)/2, depth + 1, dimension);
@@ -109,8 +106,6 @@ Coordinate* KD_Tree::Build_KD_Tree(Coordinate **dataset, int left, int right, in
             temp->left = Build_KD_Tree(dataset, left, left + (right - left)/2 + (i - 1), depth + 1, dimension);
             temp->right = Build_KD_Tree(dataset, left + (right - left)/2 + i, right, depth + 1, dimension);
         }
-//        temp->left = Build_KD_Tree(dataset, left, left + (right - left)/2 , depth + 1, dimension);
-//        temp->right = Build_KD_Tree(dataset, left + (right - left)/2 + 1, right, depth + 1, dimension);
 
         temp->set_lower_and_upper_bound();
         

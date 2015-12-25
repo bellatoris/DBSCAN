@@ -9,7 +9,6 @@
 //
 
 #include "median_finding.h"
-#include <algorithm>
 
 //utility
 inline float squared(const float x)
@@ -80,8 +79,10 @@ void Coordinate::set_lower_and_upper_bound()
         //
         for(int i = 0; i < dimension; i++)
         {
-            upper[i] = std::max(left->upper[i], right->upper[i]);
-            lower[i] = std::min(left->lower[i], right->lower[i]);
+//            upper[i] = std::max(left->upper[i], right->upper[i]);
+//            lower[i] = std::min(left->lower[i], right->lower[i]);
+            upper[i] = left->upper[i] > right->upper[i] ? left->upper[i] : right->upper[i];
+            lower[i] = left->lower[i] < right->lower[i] ? left->lower[i] : right->lower[i];
         }
     }
     return;
@@ -92,12 +93,6 @@ void Coordinate::search(Coordinate_Set *container, Coordinate &query, float epsl
 // the core search routine.
 // This uses true distance to bounding box as the
 // criterion to search the secondary node.
-//
-// This results in somewhat fewer searches of the secondary nodes
-// than 'search', which uses the vdiff vector,  but as this
-// takes more computational time, the overall performance may not
-// be improved in actual run time.
-//
 {
     if(!left && !right)
         //we are on a leaf node
@@ -107,25 +102,9 @@ void Coordinate::search(Coordinate_Set *container, Coordinate &query, float epsl
     else
     {
         Coordinate *ncloser, *nfarther;
-        
-        float extra;
         float qval = query.point[ref_axis];
-        // value of the wall boundary on the cut dimension.
-        //        float left_extra, right_extra;
-        //        left_extra = qval - cut_val_left;
-        //        right_extra = cut_val_right - qval;
-        //
-        //        if(left && squared(left_extra) < squared(epslion))
-        //        {
-        //            if(left->box_in_search_range(query, epslion))
-        //                left->search(container, query, epslion);
-        //        }
-        //
-        //        if(right && squared(right_extra) < squared(epslion))
-        //        {
-        //            if(right->box_in_search_range(query, epslion))
-        //                right->search(container, query, epslion);
-        //        }
+        //value of the wall boundary on the cut dimension.
+        float extra;
         
         if (qval <= axis_data)
         {
@@ -237,6 +216,7 @@ void Coordinate_Set::print()
             quick_container[i] = temp;
             temp = temp->next;
         }
+        //sort with index
         quick_sort(quick_container, num_of_neighbor);
         for(int i = 0; i < num_of_neighbor; i++)
         {

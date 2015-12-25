@@ -10,7 +10,6 @@
 #define KD_Tree_h
 
 #include "median_finding.h"
-#include "Coordinate_Set.h"
 
 using namespace std;
 

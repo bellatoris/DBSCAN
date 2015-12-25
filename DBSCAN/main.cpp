@@ -20,43 +20,31 @@ using namespace std;
 int main(int argc, const char * argv[]) {
     
     random_device rng;
-
+    FILE *testset = fopen("/Users/Bellatoris/Documents/MATLAB/testset", "w");
     float **a;
-    a = new float*[100];
-    for(int i = 0; i < 100; i++)
+    a = new float*[8000];
+    for(int i = 0; i < 8000; i++)
     {
         cout << "ID:";
         if(i < 10)
             cout <<"0";
          cout << i << "\t\t";
-        a[i] = new float[2];
-        float k = rng()%100;
-        float y = k/100;
-        for(int j = 0; j < 1; j++)
+        a[i] = new float[5];
+        for(int j = 0; j < 4; j++)
         {
-//            a[i][j] = 50 + y + rng()%30;
-            a[i][j] = rng()%30;
+            float y = rng()%1000;
+            y = y/1000;
+            a[i][j] = y + rng()%70;
             cout << a[i][j] << ", ";
+            fprintf(testset, "%f ", a[i][j]);
         }
-//        a[i][1] = 50 + y + rng()%30;
-        a[i][1] = rng()%30;
-        cout << a[i][1] << "\n";
+        float y = rng()%1000;
+        y = y/1000;
+        a[i][4] = 50 + y + rng()%30;
+        cout << a[i][4] << "\n";
+        fprintf(testset, "%f\n", a[i][4]);
     }
-    
-//    for(int i = 0; i < 4; i++)
-//    {
-//        a[i] = new float[2];
-//    }
-//
-//    a[0][0] = 0;
-//    a[0][1] = 1;
-//    a[1][0] = 1;
-//    a[1][1] = 1;
-//    a[2][0] = 1;
-//    a[2][1] = 1;
-//    a[3][0] = 1;
-//    a[3][1] = 0;
-
+    fclose(testset);
     
 //    for(int i = 0; i < 11; i++)
 //    {
@@ -85,42 +73,13 @@ int main(int argc, const char * argv[]) {
 //    a[10][0] = 7;
 //    a[10][1] = 1;
 
-    
-    KD_Tree x = KD_Tree(a, 3, 100);
-    DBSCAN myDBSCAN = DBSCAN(x, 2, 2);
+    //KD_Tree(float **, dimension, num of data)
+    KD_Tree x = KD_Tree(a, 5, 8000);
+    //DBSCAN(&KD_Tree, epslion, minpoints)
+    DBSCAN myDBSCAN = DBSCAN(x, 7, 2);
     myDBSCAN.run();
     
-//    for(int i = 0; i < 100; i++)
-//    {
-//        cout << x.dataset[i]->ID << "\t(";
-//        for(int j = 0; j < 3; j++)
-//        {
-//            cout << x.dataset[i]->point[j] << ", ";
-//        }
-//        cout << x.dataset[i]->point[3] << ")\n";
-//    }
-//    cout << endl << endl;
-//    cout << x.dataset[0]->ID << endl;
-//    Coordinate_Set k = x.getNeighbors(*x.dataset[0], 100);
-//    k.print();
-//    
-
-//    KD_Tree x = KD_Tree(a, 5, 100);
-//    
-//    for(int i = 0; i < 100; i++)
-//    {
-//        cout << "ID: " << x.dataset[i]->ID << "\t\t(";
-//        for(int j = 0; j < 5; j++)
-//        {
-//            cout << "\t" << x.dataset[i]->point[j];
-//        }
-//        cout << "\t)" << endl;
-//    }
-//    cout << endl << endl;
-//    Coordinate_Set k = x.getNeighbors(*x.dataset[0], 1000);
-//    k.print();
-    
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < 8000; i++)
     {
         if(a[i])
             delete a[i];

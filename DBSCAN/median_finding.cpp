@@ -50,6 +50,7 @@ int median_finding(Coordinate **dataset, int ref_axis, int left, int right, int 
 //same as quick sort
 int partition(Coordinate **dataset, int ref_axis, int left, int right, int pivotIndex)
 {
+    //partition with index
     if(ref_axis == -1)
     {
         float pivotValue = dataset[pivotIndex]->ID;
@@ -100,6 +101,7 @@ int pivot(Coordinate **dataset, int ref_axis, int left, int right)
 //insertion sort and get median of array which size is less than 5
 int get_median_and_sort(Coordinate **dataset, int ref_axis, int left, int right)
 {
+    //insertion sort with index
     if(ref_axis == -1)
     {
         for(int p = left + 1; p < right + 1; p++)

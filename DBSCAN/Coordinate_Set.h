@@ -37,7 +37,9 @@ public:
     int dimension;
     
     int ref_axis;
+    //for internal vertex
     float axis_data;
+    //for leaf
     float *point;
     
     //for disjoint set // if thie point is core then core_or_member = 1, else if this point is cluster member then core_or_member = 0
@@ -59,17 +61,16 @@ public:
     //set lower and upper bound of sub tree
     
     void search(Coordinate_Set *container, Coordinate &query, float epslion);
-    // recursive innert ost cor routine for searching..
+    //recursive search algorithm
     
     void process_leaf_node_fixed_sphere(Coordinate_Set *container, Coordinate &query, float epslion);
     
     bool box_in_search_range(Coordinate &query, float epslion);
     // return true if the bounding box for this node is within the
-    // search range giveb by the searchvector and maximum radius in 'epsilon'.
+    // search range given by the searchvector and maximum radius in 'epsilon'.
     
 };
 
-//skip list of Coordinate. cuz skip list is very easy but also powerful data structure
 class Coordinate_Set
 {
 public:

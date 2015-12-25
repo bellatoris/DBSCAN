@@ -19,12 +19,11 @@ public:
     
     void run();
     
-    
+    //Union & find method are included in DBSCAN
     void UNION(Coordinate *core, Coordinate *point);
     Coordinate* Find_Set(Coordinate* point);
 
-
-    
+public:
     //for run
     KD_Tree *kdt = NULL;
     Coordinate *dummy = NULL;
